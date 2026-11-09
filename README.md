@@ -14,3 +14,7 @@ O projeto nasceu de uma ação de extensão universitária (UFMS Digital) desenv
 1. Abra a pasta do projeto no Android Studio.
 2. Aguarde a sincronização do Gradle.
 3. Execute a configuração `app` em um emulador ou celular com Android 8.0 ou superior.
+
+## Créditos
+
+Os ícones são da biblioteca [Lucide](https://lucide.dev), distribuída sob a [licença ISC](https://lucide.dev/license).
