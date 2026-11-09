@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -195,6 +197,31 @@ fun BotaoFlutuante(texto: String, aoClicar: () -> Unit, modifier: Modifier = Mod
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary
     )
+}
+
+@Composable
+fun <T> FiltroChips(
+    opcoes: List<T>,
+    selecionada: T,
+    aoSelecionar: (T) -> Unit,
+    rotulo: (T) -> String,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        opcoes.forEach { opcao ->
+            FilterChip(
+                selected = opcao == selecionada,
+                onClick = { aoSelecionar(opcao) },
+                label = { Text(rotulo(opcao)) },
+                shape = RoundedCornerShape(20.dp),
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    selectedContainerColor = MaterialTheme.colorScheme.primary,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        }
+    }
 }
 
 @Composable
