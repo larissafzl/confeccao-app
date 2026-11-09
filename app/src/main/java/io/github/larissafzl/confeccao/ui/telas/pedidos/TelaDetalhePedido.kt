@@ -1,5 +1,7 @@
 package io.github.larissafzl.confeccao.ui.telas.pedidos
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,9 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.larissafzl.confeccao.R
@@ -35,12 +39,14 @@ import io.github.larissafzl.confeccao.dados.Parcela
 import io.github.larissafzl.confeccao.dados.Pedido
 import io.github.larissafzl.confeccao.dados.StatusPedido
 import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
+import io.github.larissafzl.confeccao.ui.componentes.BotaoPrimario
 import io.github.larissafzl.confeccao.ui.componentes.BotaoSecundario
 import io.github.larissafzl.confeccao.ui.componentes.EstadoVazio
 import io.github.larissafzl.confeccao.ui.componentes.LinhaInfo
 import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
 import io.github.larissafzl.confeccao.ui.componentes.Painel
 import io.github.larissafzl.confeccao.util.Formatos
+import java.io.File
 
 @Composable
 fun TelaDetalhePedido(
@@ -51,6 +57,7 @@ fun TelaDetalhePedido(
     val tela by viewModel.tela.collectAsStateWithLifecycle()
     var confirmarExclusao by remember { mutableStateOf(false) }
     val pedido = (tela as? EstadoDetalhePedido.Pronto)?.pedido
+    val contexto = LocalContext.current
 
     Column(
         Modifier
@@ -76,7 +83,11 @@ fun TelaDetalhePedido(
             )
             is EstadoDetalhePedido.Pronto -> ConteudoPedido(
                 estado.pedido,
+                gerandoPdf = viewModel.gerandoPdf,
                 aoAlternarPaga = { viewModel.alternarPaga(estado.pedido, it) },
+                aoGerarPdf = {
+                    viewModel.gerarPdf(contexto, estado.pedido) { compartilharPdf(contexto, it, estado.pedido) }
+                },
                 aoDespachar = { aoDespachar(viewModel.pedidoId) }
             )
         }
@@ -101,7 +112,13 @@ fun TelaDetalhePedido(
 }
 
 @Composable
-private fun ConteudoPedido(pedido: Pedido, aoAlternarPaga: (Int) -> Unit, aoDespachar: () -> Unit) {
+private fun ConteudoPedido(
+    pedido: Pedido,
+    gerandoPdf: Boolean,
+    aoAlternarPaga: (Int) -> Unit,
+    aoGerarPdf: () -> Unit,
+    aoDespachar: () -> Unit
+) {
     val total = Calculos.totalPedido(pedido)
 
     Column(
@@ -176,6 +193,13 @@ private fun ConteudoPedido(pedido: Pedido, aoAlternarPaga: (Int) -> Unit, aoDesp
             if (pedido.observacoes.isNotBlank()) LinhaInfo("Observações", pedido.observacoes)
         }
 
+        BotaoPrimario(
+            if (gerandoPdf) "Gerando PDF..." else "Gerar PDF do pedido",
+            aoGerarPdf,
+            Modifier.fillMaxWidth(),
+            icone = R.drawable.ic_pdf,
+            habilitado = !gerandoPdf
+        )
         if (pedido.status == StatusPedido.EM_PRODUCAO) {
             BotaoSecundario(
                 "Marcar como despachado",
@@ -201,4 +225,15 @@ private fun LinhaParcela(parcela: Parcela, aoAlternar: () -> Unit) {
         }
         Text(Formatos.moeda(parcela.valorCentavos), style = MaterialTheme.typography.bodyMedium)
     }
+}
+
+private fun compartilharPdf(contexto: Context, arquivo: File, pedido: Pedido) {
+    val uri = FileProvider.getUriForFile(contexto, "${contexto.packageName}.arquivos", arquivo)
+    val envio = Intent(Intent.ACTION_SEND).apply {
+        type = "application/pdf"
+        putExtra(Intent.EXTRA_STREAM, uri)
+        putExtra(Intent.EXTRA_SUBJECT, "Pedido nº ${Formatos.numeroPedido(pedido.numero)}")
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    contexto.startActivity(Intent.createChooser(envio, "Enviar pedido"))
 }
