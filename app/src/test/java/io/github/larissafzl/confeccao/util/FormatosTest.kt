@@ -4,6 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 import java.time.LocalDate
+import java.time.YearMonth
 
 class FormatosTest {
 
@@ -35,6 +36,12 @@ class FormatosTest {
     fun `formata e le datas`() {
         assertEquals("12/12/2026", Formatos.data(LocalDate.of(2026, 12, 12)))
         assertEquals(LocalDate.of(2026, 1, 5), Formatos.lerData("05/01/2026"))
+    }
+
+    @Test
+    fun `mes e ano por extenso`() {
+        assertEquals("Novembro de 2026", Formatos.mesAno(YearMonth.of(2026, 11)))
+        assertEquals("Março de 2027", Formatos.mesAno(YearMonth.of(2027, 3)))
     }
 
     @Test
