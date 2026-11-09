@@ -40,6 +40,9 @@ data class Despachar(val pedidoId: String)
 @Serializable
 data class DetalheCliente(val clienteId: String)
 
+@Serializable
+data class EditarCliente(val clienteId: String? = null)
+
 // Reciclagem
 @Serializable
 object RegistrarReciclagem

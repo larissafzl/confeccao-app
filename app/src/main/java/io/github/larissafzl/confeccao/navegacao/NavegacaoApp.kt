@@ -20,6 +20,9 @@ import io.github.larissafzl.confeccao.dados.Autenticacao
 import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
 import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
 import io.github.larissafzl.confeccao.ui.telas.TelaProvisoria
+import io.github.larissafzl.confeccao.ui.telas.clientes.TelaClientes
+import io.github.larissafzl.confeccao.ui.telas.clientes.TelaDetalheCliente
+import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 
 @Composable
@@ -129,23 +132,24 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             }
 
             composable<Clientes> {
-                TelaProvisoria(
-                    "Clientes",
-                    listOf("Ver um cliente" to { navController.navigate(DetalheCliente("exemplo")) }),
-                    barraSuperior = { BarraSuperior("Clientes") }
+                TelaClientes(
+                    aoAbrirCliente = { navController.navigate(DetalheCliente(it)) },
+                    aoNovoCliente = { navController.navigate(EditarCliente()) }
                 )
             }
 
-            composable<DetalheCliente> { entrada ->
-                val rota = entrada.toRoute<DetalheCliente>()
-                TelaProvisoria(
-                    "Cliente",
-                    listOf(
-                        "Novo pedido para este cliente" to {
-                            navController.navigate(NovoPedido(clienteId = rota.clienteId))
-                        }
-                    ),
-                    barraSuperior = { BarraSuperior("Cliente", aoVoltar = voltar) }
+            composable<EditarCliente> {
+                TelaEditarCliente(
+                    aoVoltar = voltar,
+                    aoExcluir = { navController.popBackStack(Clientes, inclusive = false) }
+                )
+            }
+
+            composable<DetalheCliente> {
+                TelaDetalheCliente(
+                    aoVoltar = voltar,
+                    aoEditar = { navController.navigate(EditarCliente(it)) },
+                    aoNovoPedido = { navController.navigate(NovoPedido(clienteId = it)) }
                 )
             }
 

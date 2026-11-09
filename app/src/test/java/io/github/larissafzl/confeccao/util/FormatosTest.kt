@@ -48,4 +48,18 @@ class FormatosTest {
         assertEquals("0128", Formatos.numeroPedido(128))
         assertEquals("12345", Formatos.numeroPedido(12345))
     }
+
+    @Test
+    fun `normaliza texto para busca sem acento`() {
+        assertEquals("atelie bela forma", Formatos.normalizar("Ateliê Bela Forma"))
+        assertEquals("sumare", Formatos.normalizar("SUMARÉ"))
+    }
+
+    @Test
+    fun `iniciais ignoram palavras curtas`() {
+        assertEquals("CT", Formatos.iniciais("Casa do Terno Ltda"))
+        assertEquals("EN", Formatos.iniciais("Elegance Noivas"))
+        assertEquals("J", Formatos.iniciais("Jo"))
+        assertEquals("", Formatos.iniciais(""))
+    }
 }
