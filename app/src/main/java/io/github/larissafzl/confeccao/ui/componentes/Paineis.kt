@@ -48,6 +48,16 @@ fun LinhaInfo(rotulo: String, valor: String) {
     }
 }
 
+@Composable
+fun TituloSecao(texto: String, modifier: Modifier = Modifier) {
+    Text(
+        texto,
+        modifier = modifier.padding(top = 8.dp),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.primary
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PainelPreview() {

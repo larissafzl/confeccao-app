@@ -26,6 +26,7 @@ import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaEditarModelo
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaModelos
+import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaNovoPedido
 import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaPedidos
 
 @Composable
@@ -104,9 +105,13 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             }
 
             composable<NovoPedido> {
-                TelaProvisoria(
-                    "Novo pedido",
-                    barraSuperior = { BarraSuperior("Novo pedido", aoVoltar = voltar) }
+                TelaNovoPedido(
+                    aoVoltar = voltar,
+                    aoSalvar = { id ->
+                        navController.navigate(DetalhePedido(id)) {
+                            popUpTo<NovoPedido> { inclusive = true }
+                        }
+                    }
                 )
             }
 
