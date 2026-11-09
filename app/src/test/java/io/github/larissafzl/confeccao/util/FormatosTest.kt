@@ -44,6 +44,12 @@ class FormatosTest {
     }
 
     @Test
+    fun `numero decimal so mostra casas quando precisa`() {
+        assertEquals("58", Formatos.numero(58.0))
+        assertEquals("58,5", Formatos.numero(58.5))
+    }
+
+    @Test
     fun `numero do pedido tem quatro digitos`() {
         assertEquals("0128", Formatos.numeroPedido(128))
         assertEquals("12345", Formatos.numeroPedido(12345))

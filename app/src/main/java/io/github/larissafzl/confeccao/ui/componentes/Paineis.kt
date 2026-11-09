@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ fun Painel(
 }
 
 @Composable
-fun LinhaInfo(rotulo: String, valor: String) {
+fun LinhaInfo(rotulo: String, valor: String, destaque: Boolean = false) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
             rotulo,
@@ -43,6 +44,7 @@ fun LinhaInfo(rotulo: String, valor: String) {
             valor,
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyMedium,
+            fontWeight = if (destaque) FontWeight.Bold else FontWeight.Normal,
             textAlign = TextAlign.End
         )
     }
