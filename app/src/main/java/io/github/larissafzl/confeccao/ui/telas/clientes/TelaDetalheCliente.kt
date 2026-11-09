@@ -28,11 +28,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.larissafzl.confeccao.R
 import io.github.larissafzl.confeccao.dados.Cliente
+import io.github.larissafzl.confeccao.dados.Pedido
 import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
 import io.github.larissafzl.confeccao.ui.componentes.BotaoPrimario
 import io.github.larissafzl.confeccao.ui.componentes.EstadoVazio
 import io.github.larissafzl.confeccao.ui.componentes.LinhaInfo
 import io.github.larissafzl.confeccao.ui.componentes.Painel
+import io.github.larissafzl.confeccao.ui.componentes.TituloSecao
+import io.github.larissafzl.confeccao.ui.telas.pedidos.CartaoPedido
 import io.github.larissafzl.confeccao.util.Formatos
 
 @Composable
@@ -40,9 +43,11 @@ fun TelaDetalheCliente(
     aoVoltar: () -> Unit,
     aoEditar: (String) -> Unit,
     aoNovoPedido: (String) -> Unit,
+    aoAbrirPedido: (String) -> Unit,
     viewModel: DetalheClienteViewModel = viewModel()
 ) {
     val tela by viewModel.tela.collectAsStateWithLifecycle()
+    val pedidos by viewModel.pedidos.collectAsStateWithLifecycle()
 
     Column(
         Modifier
@@ -68,15 +73,23 @@ fun TelaDetalheCliente(
                 "Cliente não encontrado",
                 "Ele pode ter sido excluído em outro aparelho."
             )
-            is EstadoDetalheCliente.Pronto -> ConteudoCliente(estado.cliente) {
-                aoNovoPedido(viewModel.clienteId)
-            }
+            is EstadoDetalheCliente.Pronto -> ConteudoCliente(
+                estado.cliente,
+                pedidos,
+                aoAbrirPedido,
+                aoNovoPedido = { aoNovoPedido(viewModel.clienteId) }
+            )
         }
     }
 }
 
 @Composable
-private fun ConteudoCliente(cliente: Cliente, aoNovoPedido: () -> Unit) {
+private fun ConteudoCliente(
+    cliente: Cliente,
+    pedidos: List<Pedido>,
+    aoAbrirPedido: (String) -> Unit,
+    aoNovoPedido: () -> Unit
+) {
     val dados = listOf(
         "CNPJ" to cliente.cnpj,
         "Inscrição estadual" to cliente.inscricaoEstadual,
@@ -128,6 +141,30 @@ private fun ConteudoCliente(cliente: Cliente, aoNovoPedido: () -> Unit) {
                 )
             } else {
                 dados.forEach { (rotulo, valor) -> LinhaInfo(rotulo, valor) }
+            }
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TituloSecao("Histórico de pedidos", Modifier.weight(1f))
+            if (pedidos.isNotEmpty()) {
+                Text(
+                    textoPedidos(pedidos.size),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        if (pedidos.isEmpty()) {
+            Text(
+                "Nenhum pedido deste cliente ainda.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        } else {
+            pedidos.forEach { pedido ->
+                CartaoPedido(pedido, "Pedido nº ${Formatos.numeroPedido(pedido.numero)}") {
+                    aoAbrirPedido(pedido.id)
+                }
             }
         }
 

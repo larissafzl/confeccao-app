@@ -146,7 +146,8 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
                 TelaDetalheCliente(
                     aoVoltar = voltar,
                     aoEditar = { navController.navigate(EditarCliente(it)) },
-                    aoNovoPedido = { navController.navigate(NovoPedido(clienteId = it)) }
+                    aoNovoPedido = { navController.navigate(NovoPedido(clienteId = it)) },
+                    aoAbrirPedido = { navController.navigate(DetalhePedido(it)) }
                 )
             }
 
