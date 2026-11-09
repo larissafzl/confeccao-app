@@ -4,6 +4,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.text.Normalizer
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -42,4 +43,14 @@ object Formatos {
     }
 
     fun numeroPedido(numero: Int): String = numero.toString().padStart(4, '0')
+
+    fun normalizar(texto: String): String =
+        Normalizer.normalize(texto, Normalizer.Form.NFD)
+            .replace(Regex("\\p{Mn}+"), "")
+            .lowercase(brasil)
+
+    fun iniciais(nome: String): String {
+        val palavras = nome.split(" ").filter { it.length > 2 }.ifEmpty { nome.split(" ").filter { it.isNotBlank() } }
+        return palavras.take(2).joinToString("") { it.first().uppercase() }
+    }
 }

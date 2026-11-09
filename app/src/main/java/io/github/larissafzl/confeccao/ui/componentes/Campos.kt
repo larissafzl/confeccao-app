@@ -127,6 +127,27 @@ fun <T> CampoSelecao(
     }
 }
 
+@Composable
+fun CampoBusca(
+    valor: String,
+    aoMudar: (String) -> Unit,
+    dica: String,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = valor,
+        onValueChange = aoMudar,
+        modifier = modifier.fillMaxWidth(),
+        placeholder = { Text(dica) },
+        leadingIcon = {
+            Icon(painterResource(R.drawable.ic_buscar), contentDescription = null)
+        },
+        singleLine = true,
+        shape = FormatoCampo,
+        colors = coresCampo()
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CamposPreview() {
