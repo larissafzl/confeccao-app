@@ -21,6 +21,7 @@ import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
 import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
 import io.github.larissafzl.confeccao.ui.telas.TelaProvisoria
 import io.github.larissafzl.confeccao.ui.telas.clientes.TelaClientes
+import io.github.larissafzl.confeccao.ui.telas.clientes.TelaDetalheCliente
 import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 
@@ -144,16 +145,11 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
                 )
             }
 
-            composable<DetalheCliente> { entrada ->
-                val rota = entrada.toRoute<DetalheCliente>()
-                TelaProvisoria(
-                    "Cliente",
-                    listOf(
-                        "Novo pedido para este cliente" to {
-                            navController.navigate(NovoPedido(clienteId = rota.clienteId))
-                        }
-                    ),
-                    barraSuperior = { BarraSuperior("Cliente", aoVoltar = voltar) }
+            composable<DetalheCliente> {
+                TelaDetalheCliente(
+                    aoVoltar = voltar,
+                    aoEditar = { navController.navigate(EditarCliente(it)) },
+                    aoNovoPedido = { navController.navigate(NovoPedido(clienteId = it)) }
                 )
             }
 
