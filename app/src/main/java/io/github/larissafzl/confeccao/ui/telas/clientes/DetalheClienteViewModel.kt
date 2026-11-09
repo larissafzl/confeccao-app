@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import io.github.larissafzl.confeccao.dados.Cliente
 import io.github.larissafzl.confeccao.dados.ClienteRepositorio
+import io.github.larissafzl.confeccao.dados.Pedido
+import io.github.larissafzl.confeccao.dados.PedidoRepositorio
 import io.github.larissafzl.confeccao.navegacao.DetalheCliente
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,4 +33,8 @@ class DetalheClienteViewModel(estado: SavedStateHandle) : ViewModel() {
         }
         .catch { emit(EstadoDetalheCliente.NaoEncontrado) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), EstadoDetalheCliente.Carregando)
+
+    val pedidos: StateFlow<List<Pedido>> = PedidoRepositorio().observarDoCliente(clienteId)
+        .catch { emit(emptyList()) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 }

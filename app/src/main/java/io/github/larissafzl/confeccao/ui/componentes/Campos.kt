@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +36,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.larissafzl.confeccao.R
 import io.github.larissafzl.confeccao.ui.theme.ConfeccaoTheme
+import io.github.larissafzl.confeccao.util.Formatos
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 private val FormatoCampo = RoundedCornerShape(12.dp)
 
@@ -88,7 +97,8 @@ fun <T> CampoSelecao(
     aoSelecionar: (T) -> Unit,
     modifier: Modifier = Modifier,
     dica: String = "Selecione",
-    textoDaOpcao: (T) -> String = { it.toString() }
+    textoDaOpcao: (T) -> String = { it.toString() },
+    erro: String? = null
 ) {
     var aberto by remember { mutableStateOf(false) }
     val interacao = remember { MutableInteractionSource() }
@@ -108,6 +118,8 @@ fun <T> CampoSelecao(
                     Icon(painterResource(R.drawable.ic_seta_baixo), contentDescription = null)
                 },
                 singleLine = true,
+                isError = erro != null,
+                supportingText = erro?.let { { Text(it) } },
                 shape = FormatoCampo,
                 colors = coresCampo(),
                 interactionSource = interacao
@@ -123,6 +135,64 @@ fun <T> CampoSelecao(
                     )
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CampoData(
+    rotulo: String,
+    data: LocalDate?,
+    aoSelecionar: (LocalDate) -> Unit,
+    modifier: Modifier = Modifier,
+    erro: String? = null
+) {
+    var aberto by remember { mutableStateOf(false) }
+    val interacao = remember { MutableInteractionSource() }
+    LaunchedEffect(interacao) {
+        interacao.interactions.collect { if (it is PressInteraction.Release) aberto = true }
+    }
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Rotulo(rotulo)
+        OutlinedTextField(
+            value = data?.let { Formatos.data(it) }.orEmpty(),
+            onValueChange = {},
+            modifier = Modifier.fillMaxWidth(),
+            readOnly = true,
+            placeholder = { Text("dd/mm/aaaa") },
+            trailingIcon = {
+                Icon(painterResource(R.drawable.ic_calendario), contentDescription = null)
+            },
+            singleLine = true,
+            isError = erro != null,
+            supportingText = erro?.let { { Text(it) } },
+            shape = FormatoCampo,
+            colors = coresCampo(),
+            interactionSource = interacao
+        )
+    }
+
+    if (aberto) {
+        val estado = rememberDatePickerState(
+            initialSelectedDateMillis = (data ?: LocalDate.now())
+                .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+        )
+        DatePickerDialog(
+            onDismissRequest = { aberto = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    estado.selectedDateMillis?.let {
+                        aoSelecionar(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate())
+                    }
+                    aberto = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { aberto = false }) { Text("Cancelar") }
+            }
+        ) {
+            DatePicker(state = estado)
         }
     }
 }

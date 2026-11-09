@@ -15,6 +15,7 @@ object Formatos {
 
     private val brasil: Locale = Locale.forLanguageTag("pt-BR")
     private val numero = DecimalFormat("#,##0.00", DecimalFormatSymbols(brasil))
+    private val decimal = DecimalFormat("#,##0.##", DecimalFormatSymbols(brasil))
     private val data = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT)
 
     fun moeda(centavos: Long): String {
@@ -41,6 +42,8 @@ object Formatos {
     } catch (e: DateTimeParseException) {
         null
     }
+
+    fun numero(valor: Double): String = decimal.format(valor)
 
     fun numeroPedido(numero: Int): String = numero.toString().padStart(4, '0')
 

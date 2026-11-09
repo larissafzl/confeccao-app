@@ -26,6 +26,10 @@ import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaEditarModelo
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaModelos
+import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaDespachar
+import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaDetalhePedido
+import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaNovoPedido
+import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaPedidos
 
 @Composable
 fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
@@ -96,39 +100,32 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             }
 
             composable<Pedidos> {
-                TelaProvisoria(
-                    "Pedidos",
-                    listOf(
-                        "Novo pedido" to { navController.navigate(NovoPedido()) },
-                        "Ver um pedido" to { navController.navigate(DetalhePedido("exemplo")) }
-                    ),
-                    barraSuperior = { BarraSuperior("Pedidos") }
+                TelaPedidos(
+                    aoAbrirPedido = { navController.navigate(DetalhePedido(it)) },
+                    aoNovoPedido = { navController.navigate(NovoPedido()) }
                 )
             }
 
             composable<NovoPedido> {
-                TelaProvisoria(
-                    "Novo pedido",
-                    barraSuperior = { BarraSuperior("Novo pedido", aoVoltar = voltar) }
+                TelaNovoPedido(
+                    aoVoltar = voltar,
+                    aoSalvar = { id ->
+                        navController.navigate(DetalhePedido(id)) {
+                            popUpTo<NovoPedido> { inclusive = true }
+                        }
+                    }
                 )
             }
 
-            composable<DetalhePedido> { entrada ->
-                val rota = entrada.toRoute<DetalhePedido>()
-                TelaProvisoria(
-                    "Pedido",
-                    listOf(
-                        "Marcar como despachado" to { navController.navigate(Despachar(rota.pedidoId)) }
-                    ),
-                    barraSuperior = { BarraSuperior("Pedido", aoVoltar = voltar) }
+            composable<DetalhePedido> {
+                TelaDetalhePedido(
+                    aoVoltar = voltar,
+                    aoDespachar = { navController.navigate(Despachar(it)) }
                 )
             }
 
             composable<Despachar> {
-                TelaProvisoria(
-                    "Despachar pedido",
-                    barraSuperior = { BarraSuperior("Despachar pedido", aoVoltar = voltar) }
-                )
+                TelaDespachar(aoVoltar = voltar)
             }
 
             composable<Clientes> {
@@ -149,7 +146,8 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
                 TelaDetalheCliente(
                     aoVoltar = voltar,
                     aoEditar = { navController.navigate(EditarCliente(it)) },
-                    aoNovoPedido = { navController.navigate(NovoPedido(clienteId = it)) }
+                    aoNovoPedido = { navController.navigate(NovoPedido(clienteId = it)) },
+                    aoAbrirPedido = { navController.navigate(DetalhePedido(it)) }
                 )
             }
 

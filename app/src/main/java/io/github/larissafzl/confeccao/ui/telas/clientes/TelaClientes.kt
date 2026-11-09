@@ -35,6 +35,7 @@ fun TelaClientes(
 ) {
     val clientes by viewModel.clientes.collectAsStateWithLifecycle()
     val busca by viewModel.busca.collectAsStateWithLifecycle()
+    val pedidosPorCliente by viewModel.pedidosPorCliente.collectAsStateWithLifecycle()
 
     Box(
         Modifier
@@ -69,6 +70,7 @@ fun TelaClientes(
                             titulo = cliente.nome,
                             subtitulo = cliente.local,
                             iniciais = Formatos.iniciais(cliente.nome),
+                            valor = pedidosPorCliente[cliente.id]?.let { textoPedidos(it) },
                             aoClicar = { aoAbrirCliente(cliente.id) }
                         )
                     }
@@ -84,3 +86,5 @@ fun TelaClientes(
         )
     }
 }
+
+fun textoPedidos(quantidade: Int): String = if (quantidade == 1) "1 pedido" else "$quantidade pedidos"
