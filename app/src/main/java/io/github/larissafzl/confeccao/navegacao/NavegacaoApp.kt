@@ -6,6 +6,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,6 +14,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import io.github.larissafzl.confeccao.R
+import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
+import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
 import io.github.larissafzl.confeccao.ui.telas.TelaProvisoria
 
 @Composable
@@ -51,27 +55,30 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             composable<Inicio> {
                 TelaProvisoria(
                     "Início",
-                    listOf(
-                        "Modelos" to { navController.navigate(Modelos) },
-                        "Novo pedido" to { navController.navigate(NovoPedido()) }
-                    )
+                    listOf("Novo pedido" to { navController.navigate(NovoPedido()) }),
+                    barraSuperior = {
+                        BarraSuperior(
+                            stringResource(R.string.app_name),
+                            acoes = {
+                                MenuOpcoes(listOf("Modelos de capa" to { navController.navigate(Modelos) }))
+                            }
+                        )
+                    }
                 )
             }
 
             composable<Modelos> {
                 TelaProvisoria(
                     "Modelos",
-                    listOf(
-                        "Novo modelo" to { navController.navigate(EditarModelo()) },
-                        "Voltar" to voltar
-                    )
+                    listOf("Novo modelo" to { navController.navigate(EditarModelo()) }),
+                    barraSuperior = { BarraSuperior("Modelos", aoVoltar = voltar) }
                 )
             }
 
             composable<EditarModelo> { entrada ->
                 val rota = entrada.toRoute<EditarModelo>()
                 val titulo = if (rota.modeloId == null) "Novo modelo" else "Editar modelo"
-                TelaProvisoria(titulo, listOf("Voltar" to voltar))
+                TelaProvisoria(titulo, barraSuperior = { BarraSuperior(titulo, aoVoltar = voltar) })
             }
 
             composable<Pedidos> {
@@ -80,62 +87,70 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
                     listOf(
                         "Novo pedido" to { navController.navigate(NovoPedido()) },
                         "Ver um pedido" to { navController.navigate(DetalhePedido("exemplo")) }
-                    )
+                    ),
+                    barraSuperior = { BarraSuperior("Pedidos") }
                 )
             }
 
             composable<NovoPedido> {
-                TelaProvisoria("Novo pedido", listOf("Voltar" to voltar))
+                TelaProvisoria(
+                    "Novo pedido",
+                    barraSuperior = { BarraSuperior("Novo pedido", aoVoltar = voltar) }
+                )
             }
 
             composable<DetalhePedido> { entrada ->
                 val rota = entrada.toRoute<DetalhePedido>()
                 TelaProvisoria(
-                    "Detalhe do pedido",
+                    "Pedido",
                     listOf(
-                        "Marcar como despachado" to { navController.navigate(Despachar(rota.pedidoId)) },
-                        "Voltar" to voltar
-                    )
+                        "Marcar como despachado" to { navController.navigate(Despachar(rota.pedidoId)) }
+                    ),
+                    barraSuperior = { BarraSuperior("Pedido", aoVoltar = voltar) }
                 )
             }
 
             composable<Despachar> {
-                TelaProvisoria("Despachar pedido", listOf("Voltar" to voltar))
+                TelaProvisoria(
+                    "Despachar pedido",
+                    barraSuperior = { BarraSuperior("Despachar pedido", aoVoltar = voltar) }
+                )
             }
 
             composable<Clientes> {
                 TelaProvisoria(
                     "Clientes",
-                    listOf(
-                        "Ver um cliente" to { navController.navigate(DetalheCliente("exemplo")) }
-                    )
+                    listOf("Ver um cliente" to { navController.navigate(DetalheCliente("exemplo")) }),
+                    barraSuperior = { BarraSuperior("Clientes") }
                 )
             }
 
             composable<DetalheCliente> { entrada ->
                 val rota = entrada.toRoute<DetalheCliente>()
                 TelaProvisoria(
-                    "Detalhe do cliente",
+                    "Cliente",
                     listOf(
                         "Novo pedido para este cliente" to {
                             navController.navigate(NovoPedido(clienteId = rota.clienteId))
-                        },
-                        "Voltar" to voltar
-                    )
+                        }
+                    ),
+                    barraSuperior = { BarraSuperior("Cliente", aoVoltar = voltar) }
                 )
             }
 
             composable<Reciclagem> {
                 TelaProvisoria(
                     "Reciclagem",
-                    listOf(
-                        "Registrar venda" to { navController.navigate(RegistrarReciclagem) }
-                    )
+                    listOf("Registrar venda" to { navController.navigate(RegistrarReciclagem) }),
+                    barraSuperior = { BarraSuperior("Reciclagem") }
                 )
             }
 
             composable<RegistrarReciclagem> {
-                TelaProvisoria("Registrar reciclagem", listOf("Voltar" to voltar))
+                TelaProvisoria(
+                    "Registrar reciclagem",
+                    barraSuperior = { BarraSuperior("Registrar reciclagem", aoVoltar = voltar) }
+                )
             }
         }
     }
