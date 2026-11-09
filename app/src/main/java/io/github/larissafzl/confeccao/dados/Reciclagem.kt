@@ -3,10 +3,11 @@ package io.github.larissafzl.confeccao.dados
 import java.time.LocalDate
 
 enum class Material(val rotulo: String) {
-    RETALHOS("Retalhos de TNT e PVC"),
+    RETALHOS("Retalhos de TNT/PVC"),
     TUBOS("Tubos de papelão"),
     EMBALAGENS("Embalagens"),
-    LATAS("Latas de tinta")
+    LATAS("Latas de tinta"),
+    OUTRO("Outro")
 }
 
 data class Reciclagem(
