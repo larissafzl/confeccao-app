@@ -26,6 +26,7 @@ import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaEditarModelo
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaModelos
+import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaDespachar
 import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaDetalhePedido
 import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaNovoPedido
 import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaPedidos
@@ -124,10 +125,7 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             }
 
             composable<Despachar> {
-                TelaProvisoria(
-                    "Despachar pedido",
-                    barraSuperior = { BarraSuperior("Despachar pedido", aoVoltar = voltar) }
-                )
+                TelaDespachar(aoVoltar = voltar)
             }
 
             composable<Clientes> {
