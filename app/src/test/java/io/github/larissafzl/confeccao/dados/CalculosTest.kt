@@ -22,6 +22,11 @@ class CalculosTest {
     }
 
     @Test
+    fun `preco sem imposto desconta 8 por cento`() {
+        assertEquals(727L, Calculos.precoSemImposto(790))
+    }
+
+    @Test
     fun `lucro pode ser negativo quando o custo e alto`() {
         val modelo = ModeloCapa(custoCentavos = 800, precoCentavos = 790)
         assertTrue(Calculos.lucroPorCapa(modelo) < 0)

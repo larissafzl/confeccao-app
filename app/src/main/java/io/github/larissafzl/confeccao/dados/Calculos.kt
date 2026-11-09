@@ -8,13 +8,13 @@ object Calculos {
 
     val IMPOSTO: BigDecimal = BigDecimal("0.08")
 
-    fun lucroPorCapa(modelo: ModeloCapa): Long {
-        val precoSemImposto = BigDecimal(modelo.precoCentavos)
-            .multiply(BigDecimal.ONE - IMPOSTO)
-            .setScale(0, RoundingMode.HALF_UP)
-            .toLong()
-        return precoSemImposto - modelo.custoCentavos
-    }
+    fun precoSemImposto(precoCentavos: Long): Long = BigDecimal(precoCentavos)
+        .multiply(BigDecimal.ONE - IMPOSTO)
+        .setScale(0, RoundingMode.HALF_UP)
+        .toLong()
+
+    fun lucroPorCapa(modelo: ModeloCapa): Long =
+        precoSemImposto(modelo.precoCentavos) - modelo.custoCentavos
 
     fun totalPedido(pedido: Pedido): Long = pedido.quantidade * pedido.precoUnitarioCentavos
 
