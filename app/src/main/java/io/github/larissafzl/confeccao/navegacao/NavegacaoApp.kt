@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -15,13 +16,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.github.larissafzl.confeccao.R
+import io.github.larissafzl.confeccao.dados.Autenticacao
 import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
 import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
 import io.github.larissafzl.confeccao.ui.telas.TelaProvisoria
+import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 
 @Composable
 fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
     val voltar: () -> Unit = { navController.popBackStack() }
+    val destinoInicial: Any = remember { if (Autenticacao.logado) Inicio else Login }
     val entradaAtual by navController.currentBackStackEntryAsState()
     val abaAtual = Aba.entries.find { aba ->
         entradaAtual?.destination?.hasRoute(aba.rota::class) == true
@@ -36,20 +40,17 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
     ) { espacamento ->
         NavHost(
             navController = navController,
-            startDestination = Login,
+            startDestination = destinoInicial,
             modifier = Modifier
                 .padding(espacamento)
                 .consumeWindowInsets(espacamento)
         ) {
             composable<Login> {
-                TelaProvisoria(
-                    "Login",
-                    listOf("Entrar" to {
-                        navController.navigate(Inicio) {
-                            popUpTo(Login) { inclusive = true }
-                        }
-                    })
-                )
+                TelaLogin(aoEntrar = {
+                    navController.navigate(Inicio) {
+                        popUpTo(Login) { inclusive = true }
+                    }
+                })
             }
 
             composable<Inicio> {
@@ -60,7 +61,17 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
                         BarraSuperior(
                             stringResource(R.string.app_name),
                             acoes = {
-                                MenuOpcoes(listOf("Modelos de capa" to { navController.navigate(Modelos) }))
+                                MenuOpcoes(
+                                    listOf(
+                                        "Modelos de capa" to { navController.navigate(Modelos) },
+                                        "Sair" to {
+                                            Autenticacao.sair()
+                                            navController.navigate(Login) {
+                                                popUpTo(navController.graph.id) { inclusive = true }
+                                            }
+                                        }
+                                    )
+                                )
                             }
                         )
                     }
