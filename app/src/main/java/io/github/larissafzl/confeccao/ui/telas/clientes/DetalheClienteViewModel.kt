@@ -19,10 +19,9 @@ sealed interface EstadoDetalheCliente {
     data class Pronto(val cliente: Cliente) : EstadoDetalheCliente
 }
 
-class DetalheClienteViewModel(
-    estado: SavedStateHandle,
-    repositorio: ClienteRepositorio = ClienteRepositorio()
-) : ViewModel() {
+class DetalheClienteViewModel(estado: SavedStateHandle) : ViewModel() {
+
+    private val repositorio = ClienteRepositorio()
 
     val clienteId = estado.toRoute<DetalheCliente>().clienteId
 

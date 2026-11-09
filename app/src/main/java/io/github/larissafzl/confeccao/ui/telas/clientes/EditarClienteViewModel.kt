@@ -13,10 +13,9 @@ import io.github.larissafzl.confeccao.navegacao.EditarCliente
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class EditarClienteViewModel(
-    estado: SavedStateHandle,
-    private val repositorio: ClienteRepositorio = ClienteRepositorio()
-) : ViewModel() {
+class EditarClienteViewModel(estado: SavedStateHandle) : ViewModel() {
+
+    private val repositorio = ClienteRepositorio()
 
     private val clienteId = estado.toRoute<EditarCliente>().clienteId
     val editando = clienteId != null
