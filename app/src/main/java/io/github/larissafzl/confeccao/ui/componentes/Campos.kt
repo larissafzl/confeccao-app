@@ -25,6 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.larissafzl.confeccao.R
@@ -57,7 +59,8 @@ fun CampoTexto(
     modifier: Modifier = Modifier,
     dica: String = "",
     tipoTeclado: KeyboardType = KeyboardType.Text,
-    erro: String? = null
+    erro: String? = null,
+    senha: Boolean = false
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Rotulo(rotulo)
@@ -69,7 +72,8 @@ fun CampoTexto(
             singleLine = true,
             isError = erro != null,
             supportingText = erro?.let { { Text(it) } },
-            keyboardOptions = KeyboardOptions(keyboardType = tipoTeclado),
+            keyboardOptions = KeyboardOptions(keyboardType = if (senha) KeyboardType.Password else tipoTeclado),
+            visualTransformation = if (senha) PasswordVisualTransformation() else VisualTransformation.None,
             shape = FormatoCampo,
             colors = coresCampo()
         )

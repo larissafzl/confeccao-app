@@ -7,7 +7,16 @@ O projeto nasceu de uma ação de extensão universitária (UFMS Digital) desenv
 ## Tecnologias
 
 - Kotlin e Jetpack Compose (Material 3)
-- Firebase Authentication e Cloud Firestore (em breve)
+- Firebase Authentication e Cloud Firestore
+
+## Configuração do Firebase
+
+Cada confecção usa o próprio projeto no Firebase, então o arquivo de configuração não fica no repositório.
+
+1. Crie um projeto no [console do Firebase](https://console.firebase.google.com).
+2. Adicione um app Android com o pacote `io.github.larissafzl.confeccao` e coloque o `google-services.json` na pasta `app/`.
+3. Em Authentication, ative o login por e-mail e senha e cadastre os usuários.
+4. Crie o Cloud Firestore e publique as regras de [`firestore.rules`](firestore.rules), colando o conteúdo na aba Regras ou com `firebase deploy --only firestore:rules`.
 
 ## Como executar
 
