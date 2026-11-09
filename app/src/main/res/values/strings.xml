@@ -1,0 +1,5 @@
+<resources>
+    <!-- Nome exibido no app. Para usar em outra confecção, basta trocar aqui. -->
+    <string name="app_name">Brassarott</string>
+    <string name="slogan">Gestão de pedidos e reciclagem</string>
+</resources>

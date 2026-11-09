@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Configuração local (caminho do SDK)
+local.properties
+
+# Firebase: cada instalação usa o próprio arquivo de configuração
+google-services.json
+
+# Chaves de assinatura
+*.jks
+*.keystore
+
+# Sistema
+.DS_Store

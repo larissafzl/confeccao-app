@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Capa de terno: contorno branco com o zíper na cor verde da marca -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M54,33 L54,29 C54,26.8 56,26 57.2,27.2" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,33 L70,41 L70,77 C70,78.7 68.7,80 67,80 L41,80 C39.3,80 38,78.7 38,77 L38,41 Z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#75A23B"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M54,38 L54,76" />
+</vector>
