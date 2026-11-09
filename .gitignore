@@ -23,3 +23,8 @@ google-services.json
 
 # Sistema
 .DS_Store
+
+# Firebase CLI
+.firebaserc
+.firebase/
+firebase-debug.log
