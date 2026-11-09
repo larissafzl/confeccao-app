@@ -47,16 +47,22 @@ class ClienteRepositorio(private val db: FirebaseFirestore = FirebaseFirestore.g
         id = id,
         nome = getString("nome").orEmpty(),
         cnpj = getString("cnpj").orEmpty(),
+        inscricaoEstadual = getString("inscricaoEstadual").orEmpty(),
+        endereco = getString("endereco").orEmpty(),
+        cidade = getString("cidade").orEmpty(),
+        uf = getString("uf").orEmpty(),
         telefone = getString("telefone").orEmpty(),
-        email = getString("email").orEmpty(),
-        cidade = getString("cidade").orEmpty()
+        email = getString("email").orEmpty()
     )
 
     private fun Cliente.paraMapa() = mapOf(
         "nome" to nome,
         "cnpj" to cnpj,
+        "inscricaoEstadual" to inscricaoEstadual,
+        "endereco" to endereco,
+        "cidade" to cidade,
+        "uf" to uf,
         "telefone" to telefone,
-        "email" to email,
-        "cidade" to cidade
+        "email" to email
     )
 }

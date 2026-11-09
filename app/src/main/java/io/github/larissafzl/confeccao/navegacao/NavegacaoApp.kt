@@ -21,6 +21,7 @@ import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
 import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
 import io.github.larissafzl.confeccao.ui.telas.TelaProvisoria
 import io.github.larissafzl.confeccao.ui.telas.clientes.TelaClientes
+import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 
 @Composable
@@ -136,10 +137,11 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
                 )
             }
 
-            composable<EditarCliente> { entrada ->
-                val rota = entrada.toRoute<EditarCliente>()
-                val titulo = if (rota.clienteId == null) "Novo cliente" else "Editar cliente"
-                TelaProvisoria(titulo, barraSuperior = { BarraSuperior(titulo, aoVoltar = voltar) })
+            composable<EditarCliente> {
+                TelaEditarCliente(
+                    aoVoltar = voltar,
+                    aoExcluir = { navController.popBackStack(Clientes, inclusive = false) }
+                )
             }
 
             composable<DetalheCliente> { entrada ->

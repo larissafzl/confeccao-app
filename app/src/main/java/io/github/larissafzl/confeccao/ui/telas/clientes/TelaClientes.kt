@@ -67,7 +67,7 @@ fun TelaClientes(
                     else -> items(lista, key = { it.id }) { cliente ->
                         ItemLista(
                             titulo = cliente.nome,
-                            subtitulo = cliente.cidade,
+                            subtitulo = cliente.local,
                             iniciais = Formatos.iniciais(cliente.nome),
                             aoClicar = { aoAbrirCliente(cliente.id) }
                         )
