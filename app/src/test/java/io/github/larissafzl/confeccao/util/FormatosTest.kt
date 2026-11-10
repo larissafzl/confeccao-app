@@ -17,6 +17,12 @@ class FormatosTest {
     }
 
     @Test
+    fun `moeda curta arredonda os centavos`() {
+        assertEquals("R$ 38.540", Formatos.moedaCurta(3_854_000))
+        assertEquals("R$ 649", Formatos.moedaCurta(64_850))
+    }
+
+    @Test
     fun `le valores digitados pelo usuario`() {
         assertEquals(790L, Formatos.lerMoeda("7,90"))
         assertEquals(790L, Formatos.lerMoeda("7,9"))

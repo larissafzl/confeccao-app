@@ -17,11 +17,18 @@ object Formatos {
     private val brasil: Locale = Locale.forLanguageTag("pt-BR")
     private val numero = DecimalFormat("#,##0.00", DecimalFormatSymbols(brasil))
     private val decimal = DecimalFormat("#,##0.##", DecimalFormatSymbols(brasil))
+    private val inteiro = DecimalFormat("#,##0", DecimalFormatSymbols(brasil))
     private val mes = DateTimeFormatter.ofPattern("MMMM 'de' uuuu", brasil)
     private val data = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT)
 
     fun moeda(centavos: Long): String {
         val valor = numero.format(BigDecimal(centavos).movePointLeft(2).abs())
+        return if (centavos < 0) "-R$ $valor" else "R$ $valor"
+    }
+
+    // Sem centavos, para os cards do painel
+    fun moedaCurta(centavos: Long): String {
+        val valor = inteiro.format(BigDecimal(centavos).movePointLeft(2).abs().setScale(0, RoundingMode.HALF_UP))
         return if (centavos < 0) "-R$ $valor" else "R$ $valor"
     }
 
