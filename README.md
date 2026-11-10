@@ -1,29 +1,29 @@
 # confeccao-app
 
-Aplicativo Android para a gestão de pequenas confecções: cadastro de clientes, emissão de pedidos em PDF, registro do material enviado para reciclagem e um painel com o resumo mensal da produção e do faturamento.
+App Android para organizar os pedidos de uma pequena confecção. Feito em uma ação de extensão da UFMS Digital com uma microempresa de Sumaré/SP que fabrica capas para ternos.
 
-O projeto nasceu de uma ação de extensão universitária (UFMS Digital) desenvolvida com uma microempresa familiar de Sumaré/SP, fabricante de capas para ternos. O código é aberto para que outras confecções possam adaptá-lo.
+<img src="docs/prints/inicio.png" width="200"> <img src="docs/prints/pedidos.png" width="200"> <img src="docs/prints/detalhe.png" width="200"> <img src="docs/prints/reciclagem.png" width="200">
 
-## Tecnologias
+## O que o app faz
 
-- Kotlin e Jetpack Compose (Material 3)
-- Firebase Authentication e Cloud Firestore
+- Cadastro de clientes e de modelos de capa
+- Pedidos com geração de PDF para enviar ao cliente
+- Parcelas calculadas a partir da data de despacho
+- Registro do material vendido para reciclagem
+- Resumo do mês na tela inicial
 
-## Configuração do Firebase
+## Como rodar
 
-Cada confecção usa o próprio projeto no Firebase, então o arquivo de configuração não fica no repositório.
+1. Crie um projeto no Firebase, adicione um app Android com o pacote `io.github.larissafzl.confeccao` e coloque o `google-services.json` na pasta `app/`.
+2. Ative o login por e-mail e senha, cadastre os usuários e publique as regras do arquivo `firestore.rules` no Firestore.
+3. Abra o projeto no Android Studio e rode em um aparelho com Android 8.0 ou superior.
 
-1. Crie um projeto no [console do Firebase](https://console.firebase.google.com).
-2. Adicione um app Android com o pacote `io.github.larissafzl.confeccao` e coloque o `google-services.json` na pasta `app/`.
-3. Em Authentication, ative o login por e-mail e senha e cadastre os usuários.
-4. Crie o Cloud Firestore e publique as regras de [`firestore.rules`](firestore.rules), colando o conteúdo na aba Regras ou com `firebase deploy --only firestore:rules`.
-
-## Como executar
-
-1. Abra a pasta do projeto no Android Studio.
-2. Aguarde a sincronização do Gradle.
-3. Execute a configuração `app` em um emulador ou celular com Android 8.0 ou superior.
+Para usar em outra confecção, troque o nome e os dados da empresa em `strings.xml` e as cores em `Color.kt`.
 
 ## Créditos
 
-Os ícones são da biblioteca [Lucide](https://lucide.dev), distribuída sob a [licença ISC](https://lucide.dev/license).
+Ícones da biblioteca [Lucide](https://lucide.dev) (licença ISC).
+
+## Licença
+
+MIT
