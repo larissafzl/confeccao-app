@@ -7,22 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import io.github.larissafzl.confeccao.R
 import io.github.larissafzl.confeccao.dados.Autenticacao
-import io.github.larissafzl.confeccao.ui.componentes.BarraSuperior
-import io.github.larissafzl.confeccao.ui.componentes.MenuOpcoes
-import io.github.larissafzl.confeccao.ui.telas.TelaProvisoria
 import io.github.larissafzl.confeccao.ui.telas.clientes.TelaClientes
 import io.github.larissafzl.confeccao.ui.telas.clientes.TelaDetalheCliente
 import io.github.larissafzl.confeccao.ui.telas.clientes.TelaEditarCliente
+import io.github.larissafzl.confeccao.ui.telas.inicio.TelaInicio
 import io.github.larissafzl.confeccao.ui.telas.login.TelaLogin
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaEditarModelo
 import io.github.larissafzl.confeccao.ui.telas.modelos.TelaModelos
@@ -65,26 +60,17 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             }
 
             composable<Inicio> {
-                TelaProvisoria(
-                    "Início",
-                    listOf("Novo pedido" to { navController.navigate(NovoPedido()) }),
-                    barraSuperior = {
-                        BarraSuperior(
-                            stringResource(R.string.app_name),
-                            acoes = {
-                                MenuOpcoes(
-                                    listOf(
-                                        "Modelos de capa" to { navController.navigate(Modelos) },
-                                        "Sair" to {
-                                            Autenticacao.sair()
-                                            navController.navigate(Login) {
-                                                popUpTo(navController.graph.id) { inclusive = true }
-                                            }
-                                        }
-                                    )
-                                )
-                            }
-                        )
+                TelaInicio(
+                    aoNovoPedido = { navController.navigate(NovoPedido()) },
+                    aoAbrirReciclagem = { irParaAba(navController, Aba.RECICLAGEM) },
+                    aoVerPedidos = { irParaAba(navController, Aba.PEDIDOS) },
+                    aoAbrirPedido = { navController.navigate(DetalhePedido(it)) },
+                    aoAbrirModelos = { navController.navigate(Modelos) },
+                    aoSair = {
+                        Autenticacao.sair()
+                        navController.navigate(Login) {
+                            popUpTo(navController.graph.id) { inclusive = true }
+                        }
                     }
                 )
             }
