@@ -181,6 +181,7 @@ class GeradorPdfPedido(private val context: Context) {
         numeroPagina++
         pagina = documento.startPage(PdfDocument.PageInfo.Builder(LARGURA, ALTURA, numeroPagina).create())
         canvas = pagina.canvas
+        canvas.drawColor(android.graphics.Color.WHITE)
     }
 
     private fun paint(tamanho: Float, cor: Int, estilo: Int = Typeface.NORMAL) = Paint().apply {
