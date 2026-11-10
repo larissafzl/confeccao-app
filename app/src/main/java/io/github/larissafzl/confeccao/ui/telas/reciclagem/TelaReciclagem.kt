@@ -156,8 +156,13 @@ private fun PainelMes(resumo: ResumoMes, aoAnterior: () -> Unit, aoProximo: () -
             IconButton(onClick = aoAnterior) {
                 Icon(painterResource(R.drawable.ic_voltar), contentDescription = "Mês anterior", tint = MaterialTheme.colorScheme.secondary)
             }
-            IconButton(onClick = aoProximo, enabled = resumo.mes < YearMonth.now()) {
-                Icon(painterResource(R.drawable.ic_seta_direita), contentDescription = "Próximo mês", tint = MaterialTheme.colorScheme.secondary)
+            val podeAvancar = resumo.mes < YearMonth.now()
+            IconButton(onClick = aoProximo, enabled = podeAvancar) {
+                Icon(
+                    painterResource(R.drawable.ic_seta_direita),
+                    contentDescription = "Próximo mês",
+                    tint = MaterialTheme.colorScheme.secondary.copy(alpha = if (podeAvancar) 1f else 0.3f)
+                )
             }
         }
         Text("${Formatos.numero(resumo.quilos)} kg reciclados", fontSize = 26.sp, fontWeight = FontWeight.Bold)
