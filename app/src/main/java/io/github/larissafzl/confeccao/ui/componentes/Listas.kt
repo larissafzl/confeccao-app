@@ -149,7 +149,10 @@ fun ItemLista(
     modifier: Modifier = Modifier,
     iniciais: String? = null,
     valor: String? = null,
-    aoClicar: (() -> Unit)? = null
+    aoClicar: (() -> Unit)? = null,
+    mostrarSeta: Boolean = aoClicar != null,
+    fundoIniciais: Color = MaterialTheme.colorScheme.primaryContainer,
+    corIniciais: Color = MaterialTheme.colorScheme.primary
 ) {
     Cartao(modifier.fillMaxWidth(), aoClicar) {
         Row(
@@ -161,10 +164,10 @@ fun ItemLista(
                 Box(
                     Modifier
                         .size(40.dp)
-                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                        .background(fundoIniciais, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(iniciais, color = MaterialTheme.colorScheme.primary, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                    Text(iniciais, color = corIniciais, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -174,7 +177,7 @@ fun ItemLista(
             if (valor != null) {
                 Text(valor, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
             }
-            if (aoClicar != null) {
+            if (mostrarSeta) {
                 Icon(
                     painterResource(R.drawable.ic_seta_direita),
                     contentDescription = null,

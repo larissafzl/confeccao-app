@@ -6,6 +6,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.Normalizer
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.format.ResolverStyle
@@ -16,6 +17,7 @@ object Formatos {
     private val brasil: Locale = Locale.forLanguageTag("pt-BR")
     private val numero = DecimalFormat("#,##0.00", DecimalFormatSymbols(brasil))
     private val decimal = DecimalFormat("#,##0.##", DecimalFormatSymbols(brasil))
+    private val mes = DateTimeFormatter.ofPattern("MMMM 'de' uuuu", brasil)
     private val data = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT)
 
     fun moeda(centavos: Long): String {
@@ -36,6 +38,8 @@ object Formatos {
     }
 
     fun data(valor: LocalDate): String = valor.format(data)
+
+    fun mesAno(valor: YearMonth): String = valor.format(mes).replaceFirstChar { it.titlecase(brasil) }
 
     fun lerData(texto: String): LocalDate? = try {
         LocalDate.parse(texto.trim(), data)
