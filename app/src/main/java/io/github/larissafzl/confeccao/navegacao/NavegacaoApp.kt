@@ -31,6 +31,7 @@ import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaDetalhePedido
 import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaNovoPedido
 import io.github.larissafzl.confeccao.ui.telas.pedidos.TelaPedidos
 import io.github.larissafzl.confeccao.ui.telas.reciclagem.TelaReciclagem
+import io.github.larissafzl.confeccao.ui.telas.reciclagem.TelaRegistrarReciclagem
 
 @Composable
 fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
@@ -157,10 +158,7 @@ fun NavegacaoApp(navController: NavHostController = rememberNavController()) {
             }
 
             composable<RegistrarReciclagem> {
-                TelaProvisoria(
-                    "Registrar reciclagem",
-                    barraSuperior = { BarraSuperior("Registrar reciclagem", aoVoltar = voltar) }
-                )
+                TelaRegistrarReciclagem(aoVoltar = voltar)
             }
         }
     }
